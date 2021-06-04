@@ -6,7 +6,7 @@ from tkinter.font import BOLD
 import hashlib
 import re
 import datetime
-print("Gitを使います")
+
 con = sqlite3.connect("ICO_Setter.db")
 cur = con.cursor()
 try:

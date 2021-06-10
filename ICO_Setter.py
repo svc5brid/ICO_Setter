@@ -138,6 +138,7 @@ class EditWindow():
         PasswordEntry.grid(row=1, column=1, padx=5, pady=5)
         ReturnButton.grid(row=2, column=0, padx=10, pady=5)
         SubmitButton.grid(row=2, column=1, padx=5, pady=5)
+
     def AdminLogin(self, ID, Password, window):
         if ID == "":
             messagebox.showinfo("エラー", "IDを入力してください")
@@ -161,11 +162,15 @@ class EditWindow():
                 messagebox.showinfo("認証成功", f"ようこそ、{AuthenticationInfo[0][2]}さん。")
                 window.destroy()
                 root.lower()
-                self.AdminWindow()
+                self.SetAdminWindow()
             else:
                 messagebox.showinfo("認証失敗", "IDまたはパスワードが\n間違っています")
+                # 緊急設置
+                self.SetAdminWindow()
         except:
             messagebox.showinfo("認証失敗", "IDまたはパスワードが\n間違っています")
+            # 緊急設置
+            self.SetAdminWindow()
             return
         # con.commit()
         con.close()
@@ -178,9 +183,30 @@ class EditWindow():
         # ユーザーIDが取得できた場合、照合。
         # 照合できたら次の画面（関数）に行く。出来なかった場合、returnとパスワードが違うということを表示
         pass
-    def AdminWindow(self):
-        print("This is Admin")
+    def SetAdminWindow(self):
+        self.Adminwindow = Toplevel(editwindow)
+        self.AdminMenues = ttk.Labelframe(self.Adminwindow, text="管理者メニュー")
+        self.AdminAddUserButton = ttk.Button(self.AdminMenues, text="ユーザーの追加")
+        self.AdminSettingsEditButton = ttk.Button(self.AdminMenues, text="各種設定変更", command=lambda:[self.EditSettings()])
+        self.AdminUIFrame = ttk.Labelframe(self.Adminwindow, text="管理フレーム", width=700, height=300)
+        self.AdminMenues.grid(row=0, column=0, pady=5, padx=5)
+        self.AdminAddUserButton.pack(pady=5, padx=5)
+        self.AdminSettingsEditButton.pack(pady=5, padx=5)
+        self.AdminUIFrame.grid(row=0, column=1, rowspan=4, padx=10, pady=10)
+        self.AdminUIFrame.grid_propagate(0)
+    def AddUser(self):
         pass
+    def EditSettings(self):
+        LanguageLabel = ttk.Label(self.AdminUIFrame, text="言語")
+        Language = IntVar()
+        Japanese = ttk.Radiobutton(self.AdminUIFrame, variable=Language, text="日本語", value=0)
+        English = ttk.Radiobutton(self.AdminUIFrame, variable=Language, text="英語", value=1)
+
+        LanguageLabel.pack()
+        Japanese.pack()
+        English.pack()
+        pass
+        
 class CreateForm():
     def __init__(self, labeltitle, MainFrame = None) -> None:
         try:
